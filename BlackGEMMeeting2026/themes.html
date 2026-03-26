@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Color Scheme Picker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #e2e2e2;
+    color: #333;
+    padding: 48px 24px;
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1360px; margin: 0 auto; }
+
+  h1 { text-align: center; font-size: 2rem; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #777; margin-bottom: 48px; font-size: 1rem; }
+
+  .themes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  @media (max-width: 960px) { .themes-grid { grid-template-columns: 1fr; } }
+
+  .theme-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    transition: box-shadow .2s;
+  }
+  .theme-card:hover { box-shadow: 0 6px 36px rgba(0,0,0,0.12); }
+
+  .theme-name { font-size: 1.35rem; font-weight: 700; color: #111; margin-bottom: 2px; }
+  .theme-desc { font-size: 0.84rem; color: #999; margin-bottom: 20px; }
+
+  .section-label {
+    font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.1px; color: #b0b0b0; margin: 16px 0 7px;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+
+  .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .swatch-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    cursor: pointer; min-width: 52px;
+  }
+  .swatch-item:hover .swatch-color { transform: scale(1.1); }
+  .swatch-item:hover .swatch-hex  { color: #555; }
+
+  .swatch-color {
+    width: 46px; height: 46px; border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.09);
+    transition: transform .15s;
+  }
+  .swatch-color.sm { width: 36px; height: 36px; border-radius: 8px; }
+
+  .swatch-name { font-size: 0.58rem; color: #aaa; text-align: center; line-height: 1.2; margin-top: 2px; }
+  .swatch-hex {
+    font-family: 'SF Mono','Fira Code','Consolas', monospace;
+    font-size: 0.56rem; color: #ccc; transition: color .15s; user-select: all;
+  }
+
+  .divider { height: 1px; background: #f0f0f0; margin: 20px 0 4px; }
+
+  /* Slide Preview */
+  .preview-label {
+    font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.1px; color: #b0b0b0; margin: 20px 0 8px;
+  }
+  .slide {
+    border-radius: 10px; padding: 20px 22px 18px; border: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden;
+  }
+  .slide .s-title   { font-size: 1.05rem; font-weight: 700; margin-bottom: 1px; }
+  .slide .s-sub      { font-size: 0.72rem; margin-bottom: 4px; }
+  .slide .s-line     { height: 3px; width: 42px; border-radius: 2px; margin-bottom: 14px; }
+  .slide .s-body     { font-size: 0.68rem; line-height: 1.55; margin-bottom: 16px; }
+  .slide .hl         { padding: 1px 5px; border-radius: 3px; font-weight: 600; }
+  .slide .bold       { font-weight: 600; }
+
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 52px; }
+  .bars div { width: 22px; border-radius: 4px 4px 0 0; }
+
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .tags span {
+    font-size: 0.6rem; font-weight: 600; padding: 2px 9px; border-radius: 5px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #222; color: #fff; padding: 10px 22px; border-radius: 10px;
+    font-size: 0.82rem; font-weight: 500; opacity: 0;
+    transition: transform .3s, opacity .3s; z-index: 99; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎨 Presentation Color Schemes</h1>
+  <p class="subtitle">Click any swatch to copy its hex code · Each theme includes base, text, accent, semantic &amp; chart colors</p>
+
+  <div class="themes-grid">
+
+    <!-- ===================== THEME 1 ===================== -->
+    <div class="theme-card">
+      <div class="theme-name">1 · Arctic Blue</div>
+      <div class="theme-desc">Clean, modern &amp; corporate — cool tones on pure white</div>
+
+      <div class="section-label">Base</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#FFFFFF')"><div class="swatch-color" style="background:#FFFFFF"></div><div class="swatch-name">Background</div><div class="swatch-hex">#FFFFFF</div></div>
+        <div class="swatch-item" onclick="copy('#F1F5F9')"><div class="swatch-color" style="background:#F1F5F9"></div><div class="swatch-name">Surface</div><div class="swatch-hex">#F1F5F9</div></div>
+        <div class="swatch-item" onclick="copy('#E2E8F0')"><div class="swatch-color" style="background:#E2E8F0"></div><div class="swatch-name">Border</div><div class="swatch-hex">#E2E8F0</div></div>
+      </div>
+
+      <div class="section-label">Text</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#0F172A')"><div class="swatch-color" style="background:#0F172A"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#0F172A</div></div>
+        <div class="swatch-item" onclick="copy('#64748B')"><div class="swatch-color" style="background:#64748B"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#64748B</div></div>
+      </div>
+
+      <div class="section-label">Accents</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#2563EB')"><div class="swatch-color" style="background:#2563EB"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#2563EB</div></div>
+        <div class="swatch-item" onclick="copy('#7C3AED')"><div class="swatch-color" style="background:#7C3AED"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#7C3AED</div></div>
+        <div class="swatch-item" onclick="copy('#FEFCE8')"><div class="swatch-color" style="background:#FEFCE8"></div><div class="swatch-name">Highlight</div><div class="swatch-hex">#FEFCE8</div></div>
+      </div>
+
+      <div class="section-label">Semantic</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#DC2626')"><div class="swatch-color" style="background:#DC2626"></div><div class="swatch-name">Red</div><div class="swatch-hex">#DC2626</div></div>
+        <div class="swatch-item" onclick="copy('#16A34A')"><div class="swatch-color" style="background:#16A34A"></div><div class="swatch-name">Green</div><div class="swatch-hex">#16A34A</div></div>
+        <div class="swatch-item" onclick="copy('#CA8A04')"><div class="swatch-color" style="background:#CA8A04"></div><div class="swatch-name">Yellow</div><div class="swatch-hex">#CA8A04</div></div>
+        <div class="swatch-item" onclick="copy('#2563EB')"><div class="swatch-color" style="background:#2563EB"></div><div class="swatch-name">Blue</div><div class="swatch-hex">#2563EB</div></div>
+      </div>
+
+      <div class="section-label">Chart Palette</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#2563EB')"><div class="swatch-color sm" style="background:#2563EB"></div><div class="swatch-hex">#2563EB</div></div>
+        <div class="swatch-item" onclick="copy('#7C3AED')"><div class="swatch-color sm" style="background:#7C3AED"></div><div class="swatch-hex">#7C3AED</div></div>
+        <div class="swatch-item" onclick="copy('#EC4899')"><div class="swatch-color sm" style="background:#EC4899"></div><div class="swatch-hex">#EC4899</div></div>
+        <div class="swatch-item" onclick="copy('#F97316')"><div class="swatch-color sm" style="background:#F97316"></div><div class="swatch-hex">#F97316</div></div>
+        <div class="swatch-item" onclick="copy('#10B981')"><div class="swatch-color sm" style="background:#10B981"></div><div class="swatch-hex">#10B981</div></div>
+        <div class="swatch-item" onclick="copy('#06B6D4')"><div class="swatch-color sm" style="background:#06B6D4"></div><div class="swatch-hex">#06B6D4</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="preview-label">Slide Preview</div>
+      <div class="slide" style="background:#FFFFFF;border-color:#E2E8F0">
+        <div class="s-title" style="color:#0F172A">Quarterly Results Overview</div>
+        <div class="s-sub" style="color:#64748B">Performance metrics · Q4 2024</div>
+        <div class="s-line" style="background:#2563EB"></div>
+        <div class="s-body" style="color:#64748B">Revenue grew by <span class="hl" style="background:#FEFCE8;color:#CA8A04">12.4 %</span> compared to last quarter, driven by <span class="bold" style="color:#0F172A">new product launches</span>.</div>
+        <div class="bars">
+          <div style="background:#2563EB;height:70%"></div>
+          <div style="background:#7C3AED;height:55%"></div>
+          <div style="background:#EC4899;height:88%"></div>
+          <div style="background:#F97316;height:42%"></div>
+          <div style="background:#10B981;height:66%"></div>
+          <div style="background:#06B6D4;height:52%"></div>
+        </div>
+        <div class="tags">
+          <span style="background:#FEE2E2;color:#DC2626">▼ Costs</span>
+          <span style="background:#DCFCE7;color:#16A34A">▲ Revenue</span>
+          <span style="background:#FEF9C3;color:#CA8A04">● Pending</span>
+          <span style="background:#DBEAFE;color:#2563EB">ℹ Info</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== THEME 2 ===================== -->
+    <div class="theme-card">
+      <div class="theme-name">2 · Warm Linen</div>
+      <div class="theme-desc">Inviting &amp; approachable — earthy tones on warm beige</div>
+
+      <div class="section-label">Base</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#FAF7F0')"><div class="swatch-color" style="background:#FAF7F0"></div><div class="swatch-name">Background</div><div class="swatch-hex">#FAF7F0</div></div>
+        <div class="swatch-item" onclick="copy('#F0EBDF')"><div class="swatch-color" style="background:#F0EBDF"></div><div class="swatch-name">Surface</div><div class="swatch-hex">#F0EBDF</div></div>
+        <div class="swatch-item" onclick="copy('#DED7C8')"><div class="swatch-color" style="background:#DED7C8"></div><div class="swatch-name">Border</div><div class="swatch-hex">#DED7C8</div></div>
+      </div>
+
+      <div class="section-label">Text</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#2C241A')"><div class="swatch-color" style="background:#2C241A"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#2C241A</div></div>
+        <div class="swatch-item" onclick="copy('#8A7D6B')"><div class="swatch-color" style="background:#8A7D6B"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#8A7D6B</div></div>
+      </div>
+
+      <div class="section-label">Accents</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#B85B3A')"><div class="swatch-color" style="background:#B85B3A"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#B85B3A</div></div>
+        <div class="swatch-item" onclick="copy('#6A7D3E')"><div class="swatch-color" style="background:#6A7D3E"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#6A7D3E</div></div>
+        <div class="swatch-item" onclick="copy('#FFF3D4')"><div class="swatch-color" style="background:#FFF3D4"></div><div class="swatch-name">Highlight</div><div class="swatch-hex">#FFF3D4</div></div>
+      </div>
+
+      <div class="section-label">Semantic</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#C43E2A')"><div class="swatch-color" style="background:#C43E2A"></div><div class="swatch-name">Red</div><div class="swatch-hex">#C43E2A</div></div>
+        <div class="swatch-item" onclick="copy('#558B44')"><div class="swatch-color" style="background:#558B44"></div><div class="swatch-name">Green</div><div class="swatch-hex">#558B44</div></div>
+        <div class="swatch-item" onclick="copy('#C89B1E')"><div class="swatch-color" style="background:#C89B1E"></div><div class="swatch-name">Yellow</div><div class="swatch-hex">#C89B1E</div></div>
+        <div class="swatch-item" onclick="copy('#4A78A8')"><div class="swatch-color" style="background:#4A78A8"></div><div class="swatch-name">Blue</div><div class="swatch-hex">#4A78A8</div></div>
+      </div>
+
+      <div class="section-label">Chart Palette</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#B85B3A')"><div class="swatch-color sm" style="background:#B85B3A"></div><div class="swatch-hex">#B85B3A</div></div>
+        <div class="swatch-item" onclick="copy('#4A78A8')"><div class="swatch-color sm" style="background:#4A78A8"></div><div class="swatch-hex">#4A78A8</div></div>
+        <div class="swatch-item" onclick="copy('#558B44')"><div class="swatch-color sm" style="background:#558B44"></div><div class="swatch-hex">#558B44</div></div>
+        <div class="swatch-item" onclick="copy('#9A6B92')"><div class="swatch-color sm" style="background:#9A6B92"></div><div class="swatch-hex">#9A6B92</div></div>
+        <div class="swatch-item" onclick="copy('#C89B1E')"><div class="swatch-color sm" style="background:#C89B1E"></div><div class="swatch-hex">#C89B1E</div></div>
+        <div class="swatch-item" onclick="copy('#2D8A8A')"><div class="swatch-color sm" style="background:#2D8A8A"></div><div class="swatch-hex">#2D8A8A</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="preview-label">Slide Preview</div>
+      <div class="slide" style="background:#FAF7F0;border-color:#DED7C8">
+        <div class="s-title" style="color:#2C241A">Quarterly Results Overview</div>
+        <div class="s-sub" style="color:#8A7D6B">Performance metrics · Q4 2024</div>
+        <div class="s-line" style="background:#B85B3A"></div>
+        <div class="s-body" style="color:#8A7D6B">Revenue grew by <span class="hl" style="background:#FFF3D4;color:#C89B1E">12.4 %</span> compared to last quarter, driven by <span class="bold" style="color:#2C241A">new product launches</span>.</div>
+        <div class="bars">
+          <div style="background:#B85B3A;height:70%"></div>
+          <div style="background:#4A78A8;height:55%"></div>
+          <div style="background:#558B44;height:88%"></div>
+          <div style="background:#9A6B92;height:42%"></div>
+          <div style="background:#C89B1E;height:66%"></div>
+          <div style="background:#2D8A8A;height:52%"></div>
+        </div>
+        <div class="tags">
+          <span style="background:#FADDD7;color:#C43E2A">▼ Costs</span>
+          <span style="background:#DEF0D8;color:#558B44">▲ Revenue</span>
+          <span style="background:#FFF3D4;color:#C89B1E">● Pending</span>
+          <span style="background:#D8E8F4;color:#4A78A8">ℹ Info</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== THEME 3 ===================== -->
+    <div class="theme-card">
+      <div class="theme-name">3 · Sage &amp; Stone</div>
+      <div class="theme-desc">Natural &amp; balanced — calming greens on warm white</div>
+
+      <div class="section-label">Base</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#F7F7F3')"><div class="swatch-color" style="background:#F7F7F3"></div><div class="swatch-name">Background</div><div class="swatch-hex">#F7F7F3</div></div>
+        <div class="swatch-item" onclick="copy('#EDEDE6')"><div class="swatch-color" style="background:#EDEDE6"></div><div class="swatch-name">Surface</div><div class="swatch-hex">#EDEDE6</div></div>
+        <div class="swatch-item" onclick="copy('#DDDCD3')"><div class="swatch-color" style="background:#DDDCD3"></div><div class="swatch-name">Border</div><div class="swatch-hex">#DDDCD3</div></div>
+      </div>
+
+      <div class="section-label">Text</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#2B2F2C')"><div class="swatch-color" style="background:#2B2F2C"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#2B2F2C</div></div>
+        <div class="swatch-item" onclick="copy('#6D7572')"><div class="swatch-color" style="background:#6D7572"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#6D7572</div></div>
+      </div>
+
+      <div class="section-label">Accents</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#4A7C6B')"><div class="swatch-color" style="background:#4A7C6B"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#4A7C6B</div></div>
+        <div class="swatch-item" onclick="copy('#8B6B4F')"><div class="swatch-color" style="background:#8B6B4F"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#8B6B4F</div></div>
+        <div class="swatch-item" onclick="copy('#E6F0E8')"><div class="swatch-color" style="background:#E6F0E8"></div><div class="swatch-name">Highlight</div><div class="swatch-hex">#E6F0E8</div></div>
+      </div>
+
+      <div class="section-label">Semantic</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#B5453E')"><div class="swatch-color" style="background:#B5453E"></div><div class="swatch-name">Red</div><div class="swatch-hex">#B5453E</div></div>
+        <div class="swatch-item" onclick="copy('#4A7C6B')"><div class="swatch-color" style="background:#4A7C6B"></div><div class="swatch-name">Green</div><div class="swatch-hex">#4A7C6B</div></div>
+        <div class="swatch-item" onclick="copy('#B5902E')"><div class="swatch-color" style="background:#B5902E"></div><div class="swatch-name">Yellow</div><div class="swatch-hex">#B5902E</div></div>
+        <div class="swatch-item" onclick="copy('#4B7494')"><div class="swatch-color" style="background:#4B7494"></div><div class="swatch-name">Blue</div><div class="swatch-hex">#4B7494</div></div>
+      </div>
+
+      <div class="section-label">Chart Palette</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#4A7C6B')"><div class="swatch-color sm" style="background:#4A7C6B"></div><div class="swatch-hex">#4A7C6B</div></div>
+        <div class="swatch-item" onclick="copy('#B5453E')"><div class="swatch-color sm" style="background:#B5453E"></div><div class="swatch-hex">#B5453E</div></div>
+        <div class="swatch-item" onclick="copy('#4B7494')"><div class="swatch-color sm" style="background:#4B7494"></div><div class="swatch-hex">#4B7494</div></div>
+        <div class="swatch-item" onclick="copy('#8B6B4F')"><div class="swatch-color sm" style="background:#8B6B4F"></div><div class="swatch-hex">#8B6B4F</div></div>
+        <div class="swatch-item" onclick="copy('#B5902E')"><div class="swatch-color sm" style="background:#B5902E"></div><div class="swatch-hex">#B5902E</div></div>
+        <div class="swatch-item" onclick="copy('#7D6398')"><div class="swatch-color sm" style="background:#7D6398"></div><div class="swatch-hex">#7D6398</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="preview-label">Slide Preview</div>
+      <div class="slide" style="background:#F7F7F3;border-color:#DDDCD3">
+        <div class="s-title" style="color:#2B2F2C">Quarterly Results Overview</div>
+        <div class="s-sub" style="color:#6D7572">Performance metrics · Q4 2024</div>
+        <div class="s-line" style="background:#4A7C6B"></div>
+        <div class="s-body" style="color:#6D7572">Revenue grew by <span class="hl" style="background:#E6F0E8;color:#4A7C6B">12.4 %</span> compared to last quarter, driven by <span class="bold" style="color:#2B2F2C">new product launches</span>.</div>
+        <div class="bars">
+          <div style="background:#4A7C6B;height:70%"></div>
+          <div style="background:#B5453E;height:55%"></div>
+          <div style="background:#4B7494;height:88%"></div>
+          <div style="background:#8B6B4F;height:42%"></div>
+          <div style="background:#B5902E;height:66%"></div>
+          <div style="background:#7D6398;height:52%"></div>
+        </div>
+        <div class="tags">
+          <span style="background:#F4DADA;color:#B5453E">▼ Costs</span>
+          <span style="background:#DAF0E0;color:#3D6B5A">▲ Revenue</span>
+          <span style="background:#F5EDD4;color:#B5902E">● Pending</span>
+          <span style="background:#D6E6F0;color:#4B7494">ℹ Info</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== THEME 4 ===================== -->
+    <div class="theme-card">
+      <div class="theme-name">4 · Refined Slate</div>
+      <div class="theme-desc">Elegant &amp; sophisticated — deep accents on cool off-white</div>
+
+      <div class="section-label">Base</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#F5F5F2')"><div class="swatch-color" style="background:#F5F5F2"></div><div class="swatch-name">Background</div><div class="swatch-hex">#F5F5F2</div></div>
+        <div class="swatch-item" onclick="copy('#EAEAE5')"><div class="swatch-color" style="background:#EAEAE5"></div><div class="swatch-name">Surface</div><div class="swatch-hex">#EAEAE5</div></div>
+        <div class="swatch-item" onclick="copy('#D5D5CE')"><div class="swatch-color" style="background:#D5D5CE"></div><div class="swatch-name">Border</div><div class="swatch-hex">#D5D5CE</div></div>
+      </div>
+
+      <div class="section-label">Text</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#1A1A1E')"><div class="swatch-color" style="background:#1A1A1E"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#1A1A1E</div></div>
+        <div class="swatch-item" onclick="copy('#6B6B75')"><div class="swatch-color" style="background:#6B6B75"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#6B6B75</div></div>
+      </div>
+
+      <div class="section-label">Accents</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#3755A4')"><div class="swatch-color" style="background:#3755A4"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#3755A4</div></div>
+        <div class="swatch-item" onclick="copy('#1A857A')"><div class="swatch-color" style="background:#1A857A"></div><div class="swatch-name">Secondary</div><div class="swatch-hex">#1A857A</div></div>
+        <div class="swatch-item" onclick="copy('#E2E9F4')"><div class="swatch-color" style="background:#E2E9F4"></div><div class="swatch-name">Highlight</div><div class="swatch-hex">#E2E9F4</div></div>
+      </div>
+
+      <div class="section-label">Semantic</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#BE3A3A')"><div class="swatch-color" style="background:#BE3A3A"></div><div class="swatch-name">Red</div><div class="swatch-hex">#BE3A3A</div></div>
+        <div class="swatch-item" onclick="copy('#2E8B57')"><div class="swatch-color" style="background:#2E8B57"></div><div class="swatch-name">Green</div><div class="swatch-hex">#2E8B57</div></div>
+        <div class="swatch-item" onclick="copy('#B08610')"><div class="swatch-color" style="background:#B08610"></div><div class="swatch-name">Yellow</div><div class="swatch-hex">#B08610</div></div>
+        <div class="swatch-item" onclick="copy('#3755A4')"><div class="swatch-color" style="background:#3755A4"></div><div class="swatch-name">Blue</div><div class="swatch-hex">#3755A4</div></div>
+      </div>
+
+      <div class="section-label">Chart Palette</div>
+      <div class="swatches">
+        <div class="swatch-item" onclick="copy('#3755A4')"><div class="swatch-color sm" style="background:#3755A4"></div><div class="swatch-hex">#3755A4</div></div>
+        <div class="swatch-item" onclick="copy('#BE3A3A')"><div class="swatch-color sm" style="background:#BE3A3A"></div><div class="swatch-hex">#BE3A3A</div></div>
+        <div class="swatch-item" onclick="copy('#2E8B57')"><div class="swatch-color sm" style="background:#2E8B57"></div><div class="swatch-hex">#2E8B57</div></div>
+        <div class="swatch-item" onclick="copy('#8558A8')"><div class="swatch-color sm" style="background:#8558A8"></div><div class="swatch-hex">#8558A8</div></div>
+        <div class="swatch-item" onclick="copy('#B08610')"><div class="swatch-color sm" style="background:#B08610"></div><div class="swatch-hex">#B08610</div></div>
+        <div class="swatch-item" onclick="copy('#1A857A')"><div class="swatch-color sm" style="background:#1A857A"></div><div class="swatch-hex">#1A857A</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="preview-label">Slide Preview</div>
+      <div class="slide" style="background:#F5F5F2;border-color:#D5D5CE">
+        <div class="s-title" style="color:#1A1A1E">Quarterly Results Overview</div>
+        <div class="s-sub" style="color:#6B6B75">Performance metrics · Q4 2024</div>
+        <div class="s-line" style="background:#3755A4"></div>
+        <div class="s-body" style="color:#6B6B75">Revenue grew by <span class="hl" style="background:#E2E9F4;color:#3755A4">12.4 %</span> compared to last quarter, driven by <span class="bold" style="color:#1A1A1E">new product launches</span>.</div>
+        <div class="bars">
+          <div style="background:#3755A4;height:70%"></div>
+          <div style="background:#BE3A3A;height:55%"></div>
+          <div style="background:#2E8B57;height:88%"></div>
+          <div style="background:#8558A8;height:42%"></div>
+          <div style="background:#B08610;height:66%"></div>
+          <div style="background:#1A857A;height:52%"></div>
+        </div>
+        <div class="tags">
+          <span style="background:#F5D9D9;color:#BE3A3A">▼ Costs</span>
+          <span style="background:#D4EDDF;color:#2E8B57">▲ Revenue</span>
+          <span style="background:#F2E8CC;color:#B08610">● Pending</span>
+          <span style="background:#D9E2F4;color:#3755A4">ℹ Info</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</div><!-- /container -->
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+function copy(hex) {
+  navigator.clipboard.writeText(hex).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'Copied ' + hex;
+    t.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove('show'), 1400);
+  });
+}
+</script>
+</body>
+</html>

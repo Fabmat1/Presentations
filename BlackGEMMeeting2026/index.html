@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackGEM for Short-Period Binaries - Fabian Mattig</title>
+
+
+<link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+<link rel="stylesheet" href="node_modules/reveal.js/dist/theme/white.css">
+<script src="node_modules/reveal.js/dist/reveal.js"></script>
+<!--
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">
+-->
+
+<style>
+
+@font-face {
+  font-family: 'Inter';
+  src: url('assets/fonts/Inter-VariableFont_opsz,wght.woff2') format('woff2'),
+       url('assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Force font & size - belt and suspenders ── */
+.reveal-viewport,
+.reveal,
+.reveal .slides,
+.reveal .slides section,
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  text-transform: none;
+}
+.reveal p, .reveal li, .reveal blockquote,
+.reveal .pro-box, .reveal .con-box,
+.reveal .callout, .reveal .detect-note {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+/* ==========================================================
+   WARM LINEN - CUSTOM THEME
+   ========================================================== */
+:root {
+  --wl-bg:           #FAF7F0;
+  --wl-surface:      #F0EBDF;
+  --wl-border:       #DED7C8;
+
+  --wl-text:         #2C241A;
+  --wl-text-sec:     #8A7D6B;
+
+  --wl-accent:       #B85B3A;
+  --wl-accent2:      #6A7D3E;
+  --wl-highlight:    #FFF3D4;
+
+  --wl-red:          #C43E2A;
+  --wl-green:        #558B44;
+  --wl-yellow:       #C89B1E;
+  --wl-blue:         #4A78A8;
+
+  --wl-c1: #B85B3A;  --wl-c2: #4A78A8;  --wl-c3: #558B44;
+  --wl-c4: #9A6B92;  --wl-c5: #C89B1E;  --wl-c6: #2D8A8A;
+
+  --r-background-color: var(--wl-bg);
+  --r-main-font:       'Inter', system-ui, sans-serif;
+  --r-main-font-size:  28px;
+  --r-main-color:      var(--wl-text);
+  --r-heading-font:    'Inter', system-ui, sans-serif;
+  --r-heading-color:   var(--wl-text);
+  --r-heading-font-weight: 700;
+  --r-heading-letter-spacing: -0.02em;
+  --r-heading1-size:   1.6em;
+  --r-heading2-size:   1.25em;
+  --r-heading3-size:   1.0em;
+  --r-link-color:      var(--wl-accent);
+  --r-link-color-hover:#9A4A2E;
+  --r-selection-background-color: rgba(184,91,58,0.25);
+}
+
+/* ── Global typography ── */
+.reveal { font-weight: 400; }
+.reveal h1,.reveal h2,.reveal h3 { line-height:1.2; margin-bottom:.1em; }
+.reveal h3   { color: var(--wl-text-sec); font-weight:600; }
+.reveal p,
+.reveal li   { color: var(--wl-text-sec); line-height:1.5; }
+.reveal strong { color: var(--wl-text); font-weight:600; }
+.reveal em   { color: var(--wl-accent); font-style:normal; font-weight:600; }
+.reveal code { font-family:'Fira Code','Consolas',monospace; font-size:.85em; color:var(--wl-text-sec); }
+.reveal a    { text-decoration: none; }
+
+/* ── Top-align ALL slides ── */
+.reveal .slides > section,
+.reveal .slides > section > section {
+  padding: 4.5% 5% 2.5% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  text-align: left;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Vertical-stack wrapper must be transparent */
+.reveal .slides > section.stack {
+  padding: 0 !important;
+  overflow: visible;
+}
+
+/* Custom bullet style */
+.reveal ul       { list-style:none; padding-left:0; }
+.reveal ul li    { padding-left:1.2em; position:relative; margin-bottom:.3em; }
+.reveal ul li::before {
+  content:''; position:absolute; left:0; top:.52em;
+  width:7px; height:7px; background:var(--wl-accent); border-radius:50%;
+}
+
+/* Accent bar under h2 */
+.reveal h2::after {
+  content:''; display:block; width:46px; height:3px;
+  background:var(--wl-accent); border-radius:2px; margin-top:.2em;
+}
+
+/* ── Slide number ── */
+.reveal .slide-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2vw;                /* scales with window width */
+  color: var(--wl-text-sec);
+  background: transparent;
+  right: 1.4vw;
+  bottom: 1.7vh;
+  opacity: .55;
+}
+
+/* ── Section tracker ── */
+#section-tracker {
+  position: fixed;
+  bottom: 1.9vh;
+  left: 1.7vw;
+  z-index: 30;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2vw;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .15vw;
+  color: var(--wl-text-sec);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+#section-tracker.visible { opacity: .5; }
+
+/* ==========================================================
+   TITLE SLIDE
+   ========================================================== */
+section.title-slide {
+  padding: 4% 5% 2.5% !important;
+}
+.title-slide h1 {
+  font-size:1.6em!important; color:#fff!important; font-weight:800!important;
+  text-shadow:0 2px 24px rgba(0,0,0,.6);
+  line-height:1.2!important; margin-bottom:.2em!important;
+  max-width:52%;
+}
+.title-slide h1::after { display:none; }
+.title-slide .tagline {
+  font-size:.68em; color:rgba(255,255,255,.75); font-weight:400;
+  line-height:1.5; max-width:56%;
+  text-shadow:0 1px 12px rgba(0,0,0,.4);
+}
+.title-slide .meta {
+  margin-top:1.2em; font-size:.68em; color:rgba(255,255,255,.85);
+  font-weight:500; text-shadow:0 1px 8px rgba(0,0,0,.35);
+}
+.title-slide .meta span { display:block; margin-bottom:.08em; }
+.title-slide .meta strong {
+  color: rgba(255, 255, 255, 0.95);
+}
+.title-slide .logo {
+  position:absolute; top:28px; right:38px; height:100px;
+  filter: brightness(0) invert(1);
+  opacity:.85;
+}
+
+
+/* ==========================================================
+   LAYOUT UTILITIES
+   ========================================================== */
+.columns       { display:flex; gap:28px; align-items:flex-start; flex:1; min-height:0; overflow:hidden; }
+.columns.center{ align-items:center; }
+.col, .col-2 {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;          /* ← key: allows flex item to shrink */
+  display: flex;           /* ← makes placeholder's flex:1 work */
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.col.left  { align-items: flex-start; }
+.col.right { align-items: flex-end; }
+
+.text-center { text-align:center!important; }
+.text-small  { font-size:.78em!important; }
+.text-xs     { font-size:.65em!important; }
+.mt-0 { margin-top:0!important; }
+.mt-1 { margin-top:.4em!important; }
+.mt-2 { margin-top:.8em!important; }
+.mb-0 { margin-bottom:0!important; }
+.mb-05{ margin-bottom:.2em!important; }
+
+
+/* ==========================================================
+   PLACEHOLDER BOXES
+   ========================================================== */
+/* ── Base placeholder (empty / wireframe) ── */
+.placeholder {
+  background: var(--wl-surface);
+  border: 2px dashed var(--wl-border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--wl-text-sec);
+  font-size: .48em;
+  font-style: italic;
+  text-align: center;
+  padding: 14px;
+  min-height: 0;
+  flex: 1;
+}
+
+.placeholder.short { flex: none; min-height: 80px; }
+
+.placeholder code {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  opacity: .55;
+}
+
+/* ── Filled placeholder (has real image or video) ── */
+.placeholder:has(img),
+.placeholder:has(video) {
+  border-style: solid;
+  padding: 0;
+  overflow: hidden;
+  max-height: 500px;
+  width: fit-content;
+  flex: none;
+}
+
+.placeholder img,
+.placeholder video {
+  display: block;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* ==========================================================
+   PRO / CON BOXES
+   ========================================================== */
+.pro-con { display:flex; gap:14px; }
+.pro-con.stack { flex-direction:column; gap:10px; }
+
+.pro-box,.con-box {
+  flex:1; padding:12px 16px; border-radius:8px;
+  font-size:.72em; text-align:left;
+}
+.pro-box { background:rgba(85,139,68,.07); border-left:4px solid var(--wl-green); }
+.con-box { background:rgba(196,62,42,.07); border-left:4px solid var(--wl-red); }
+
+.pro-box .label { font-weight:700; font-size:.88em; color:var(--wl-green); margin-bottom:.3em; }
+.con-box .label { font-weight:700; font-size:.88em; color:var(--wl-red);   margin-bottom:.3em; }
+
+.pro-box li::before { background:var(--wl-green)!important; }
+.con-box li::before { background:var(--wl-red)!important; }
+
+.pro-box li, .con-box li { font-size:.95em; }
+
+
+/* ==========================================================
+   CALLOUT BOX
+   ========================================================== */
+.callout {
+  background:var(--wl-highlight); border-left:4px solid var(--wl-yellow);
+  padding:10px 16px; border-radius:0 8px 8px 0;
+  font-size:.78em; color:var(--wl-text); margin:.6em 0;
+}
+
+
+/* ==========================================================
+   THREE-VIDEO ROW
+   ========================================================== */
+.video-trio { display:flex; gap:16px; justify-content:center; flex:1; min-height:0; }
+
+.video-trio .card { flex:1; text-align:center; display:flex; flex-direction:column; }
+.video-trio .card .placeholder { flex:1; min-height:0; margin-bottom:6px; }
+.video-trio .card .name    { font-size:.65em; font-weight:700; color:var(--wl-text); }
+.video-trio .card .desc    { font-size:.55em; color:var(--wl-text-sec); }
+
+
+/* ==========================================================
+   DETECTABILITY - annotation callouts smaller
+   ========================================================== */
+.detect-note {
+  background:var(--wl-surface); border-left:4px solid var(--wl-border);
+  padding:8px 12px; border-radius:0 8px 8px 0;
+  font-size:.72em; color:var(--wl-text); margin-bottom:.5em;
+}
+
+
+/* ==========================================================
+   END SLIDE
+   ========================================================== */
+.end-slide { text-align:center!important; align-items:center!important; justify-content:center!important; }
+.end-slide h2::after { margin-left:auto; margin-right:auto; }
+
+.end-links {
+  display:flex; gap:36px; justify-content:center;
+  align-items:center; margin-top:1.2em;
+}
+.end-links .qr { width:130px; height:130px; min-height:auto; }
+</style>
+</head>
+
+<body>
+
+<div id="section-tracker"></div>
+
+<div class="reveal">
+<div class="slides">
+
+
+<!-- ============================================================
+     TITLE
+     ============================================================ -->
+<section class="title-slide"
+         data-section=""
+         data-background-video="assets/videos/blackgem-timelapse.mp4"
+         data-background-video-loop
+         data-background-video-muted
+         data-background-color="#000"
+         data-background-size="cover">
+
+  <img class="logo" src="assets/images/up-logo.png" alt="Universität Potsdam">
+
+  <h1>Current and Future Capabilities of BlackGEM for Surveying Short-Period Binary Star Systems</h1>
+
+  <p class="tagline">
+    With BlackGEM entering its 3rd year of photometric observations -
+    where do its capabilities stand for short-period binary research,
+    and how will they evolve?
+  </p>
+
+  <div class="meta">
+    <span><strong>Fabian Mattig</strong></span>
+    <span>Universität Potsdam, Germany</span>
+    <span style="margin-top:.5em; opacity:.65;">BlackGEM Collaboration Meeting · 2026</span>
+  </div>
+
+  <aside class="notes">
+    Welcome. I'll cover what BlackGEM can do for short-period binary research today,
+    how it compares to existing surveys, and where it's headed.  ~12 min talk.
+  </aside>
+</section>
+
+
+<!-- ============================================================
+     INTRODUCTION
+     ============================================================ -->
+<section data-section="Introduction">
+
+  <!-- ── Hot subdwarfs: HR diagram + key facts ── -->
+  <section>
+    <h2>Hot Subdwarf Stars in Close Binaries</h2>
+
+    <div class="columns center">
+      <div class="col">
+        <ul>
+          <li>Compact, core-He-burning stars on the <strong>extreme horizontal branch</strong></li>
+          <li>Spectral types <em>sdB</em>, <em>sdOB</em> &amp; <em>sdO</em></li>
+          <li>Often reside in <strong>close binary systems</strong></li>
+          <li>Relevant as <strong>SNe Ia progenitor</strong> candidates </li>
+        </ul>
+        <div class="callout" style="margin-top:.6em;">
+          Binary nature is a <strong>formation requirement</strong> - envelope stripping needs a companion.
+        </div>
+      </div>
+      <div class="col right">
+        <div class="placeholder" style="max-height: 500px;">
+          <img src="assets/images/hr-diagram.png" alt="HR Diagram — hot subdwarf region highlighted">
+        </div>
+      </div>
+    </div>
+
+    <aside class="notes">
+      Quick context for non-experts. Hot subdwarfs sit on the EHB.
+      They lost nearly all their H envelope - most likely via interaction
+      with a close companion.
+    </aside>
+  </section>
+
+  <!-- ── Evolutionary pathways (vertical sub-slide) ── -->
+  <section>
+    <h2>Binary Evolution Pathways</h2>
+
+    <div class="columns center">
+      <div class="col">
+        <div class="placeholder fit">
+          <img src="assets/images/evolutionary-pathways.png" alt="Illustration of formation channels<br>
+          (CE ejection · stable RLOF · WD merger)">
+        </div>
+      </div>
+      <div class="col">
+        <ul>
+          <li>
+            <strong>Common-envelope ejection</strong><br>
+            <span class="text-small">→ short-period sdB + dM / WD</span>
+          </li>
+          <li>
+            <strong>Stable RLOF</strong><br>
+            <span class="text-small">→ long-period sdB + FGK</span>
+          </li>
+          <li>
+            <strong>He-WD merger</strong><br>
+            <span class="text-small">→ single sdB / sdO</span>
+          </li>
+        </ul>
+        <div class="callout" style="margin-top:.6em;">
+          CE channel produces the <strong>short-period binaries</strong> detectable in photometric surveys.
+        </div>
+      </div>
+    </div>
+
+    <aside class="notes">
+      We care about the CE channel because it makes short-period systems -
+      exactly what time-domain photometry can find.
+    </aside>
+  </section>
+</section>
+
+
+<!-- ── Lightcurve signatures ── -->
+<section data-section="Introduction">
+  <h2 class="mb-05">Lightcurve Signatures</h2>
+  <p class="text-small mt-0 mb-0" style="color:var(--wl-text-sec);">
+    Three dominant photometric effects in short-period hot subdwarf binaries
+  </p>
+
+  <div class="video-trio" style="margin-top:.5em;">
+    <div class="card">
+      <div class="placeholder">
+        <!-- <video data-autoplay loop muted playsinline src="assets/videos/hw-vir.mp4"></video> -->
+        ▶ HW Vir animation
+        <code>assets/videos/hw-vir.mp4</code>
+      </div>
+      <div class="name">HW Virginis</div>
+      <div class="desc">Deep eclipses - sdB + dM/BD</div>
+    </div>
+
+    <div class="card">
+      <div class="placeholder">
+        <!-- <video data-autoplay loop muted playsinline src="assets/videos/reflection.mp4"></video> -->
+        ▶ Reflection effect animation
+        <code>assets/videos/reflection.mp4</code>
+      </div>
+      <div class="name">Reflection Effect</div>
+      <div class="desc">Irradiated companion hemisphere</div>
+    </div>
+
+    <div class="card">
+      <div class="placeholder">
+        <!-- <video data-autoplay loop muted playsinline src="assets/videos/ellipsoidal.mp4"></video> -->
+        ▶ Ellipsoidal modulation animation
+        <code>assets/videos/ellipsoidal.mp4</code>
+      </div>
+      <div class="name">Ellipsoidal Modulation</div>
+      <div class="desc">Tidal distortion - sdB + WD</div>
+    </div>
+  </div>
+
+  <p class="text-small text-center" style="margin-top:.5em; color:var(--wl-text-sec);">
+    Detection difficulty increases left → right &nbsp;·&nbsp; amplitude decreases from ~30 % to &lt; 1 %
+  </p>
+
+  <aside class="notes">
+    These are the three effects we're looking for. HW Vir eclipses are the easiest.
+    Reflection is intermediate. Ellipsoidal modulation is the subtlest.
+  </aside>
+</section>
+
+
+<!-- ============================================================
+     CURRENT COMPARISON
+     ============================================================ -->
+
+<!-- ── TESS ── -->
+<section data-section="Current Comparison">
+  <h2>TESS</h2>
+
+  <div class="pro-con">
+    <div class="pro-box">
+      <div class="label">✓ Strengths</div>
+      <ul>
+        <li>Continuous 27-day sectors - excellent phase coverage</li>
+        <li>2-min / 20-s cadence for targeted stars</li>
+        <li>High photometric precision for bright targets</li>
+      </ul>
+    </div>
+    <div class="con-box">
+      <div class="label">✗ Limitations</div>
+      <ul>
+        <li><strong>21″ pixels</strong> → severe crowding at faint magnitudes</li>
+        <li>FFI cadence 200 s – 10 min only</li>
+        <li>Shallow limiting mag for subdwarfs near the plane</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="columns mt-1">
+    <div class="col">
+      <div class="placeholder short">
+        TESS example lightcurve
+        <code>assets/images/tess-lc.png</code>
+      </div>
+    </div>
+    <div class="col">
+      <div class="placeholder short">
+        TESS FFI cutout vs DSS - pixel size comparison
+        <code>assets/images/tess-ffi-vs-dss.png</code>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    TESS is unbeatable for bright isolated targets - but many of our subdwarfs
+    are faint and in crowded fields.
+  </aside>
+</section>
+
+
+<!-- ── ZTF & ATLAS ── -->
+<section data-section="Current Comparison">
+  <h2>ZTF &amp; ATLAS</h2>
+
+  <div class="columns">
+    <div class="col">
+      <h3 class="mb-05" style="font-size:.82em;">ZTF</h3>
+      <div class="pro-con stack">
+        <div class="pro-box">
+          <div class="label">✓ Strengths</div>
+          <ul>
+            <li>Deep - g ≈ 20.5 mag</li>
+            <li>Multi-band (g, r, i)</li>
+            <li>High-cadence fields available</li>
+          </ul>
+        </div>
+        <div class="con-box">
+          <div class="label">✗ Limitations</div>
+          <ul>
+            <li>Northern sky only (δ &gt; −30°)</li>
+            <li>Irregular cadence in most fields</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <h3 class="mb-05" style="font-size:.82em;">ATLAS</h3>
+      <div class="pro-con stack">
+        <div class="pro-box">
+          <div class="label">✓ Strengths</div>
+          <ul>
+            <li>All-sky coverage</li>
+            <li>Consistent cadence (~4×/night)</li>
+          </ul>
+        </div>
+        <div class="con-box">
+          <div class="label">✗ Limitations</div>
+          <ul>
+            <li>Shallower (c/o bands, ~19 mag)</li>
+            <li>Lower spatial resolution</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    ZTF: northern workhorse but no southern coverage.
+    ATLAS: all-sky but shallower and lower resolution.
+  </aside>
+</section>
+
+
+<!-- ── Sky coverage comparison ── -->
+<section data-section="Current Comparison">
+  <h2>Survey Sky Coverage</h2>
+  <p class="text-small" style="color:var(--wl-text-sec); margin-top:-.15em;">
+    Footprints of TESS, ZTF, ATLAS - with the hot subdwarf catalogue overlaid
+  </p>
+
+  <div class="placeholder tall" style="max-width:92%; margin:0 auto; flex:1;">
+    All-sky Mollweide projection<br>
+    survey footprints + hot subdwarf catalogue positions
+    <code>assets/images/allsky-coverage.png</code>
+  </div>
+
+  <aside class="notes">
+    Note the gap in the southern Galactic plane - that's where BlackGEM enters the picture.
+  </aside>
+</section>
+
+
+<!-- ── BlackGEM as a survey ── -->
+<section data-section="Current Comparison">
+  <h2>BlackGEM for Hot Subdwarf Binaries</h2>
+
+  <div class="columns center">
+    <div class="col">
+      <div class="pro-con stack">
+        <div class="pro-box">
+          <div class="label">✓ Strengths</div>
+          <ul>
+            <li><strong>0.56″/px</strong> - excellent spatial resolution</li>
+            <li>Multi-band: u, g, r, i, z, q</li>
+            <li>Fields near the <strong>Galactic plane</strong></li>
+            <li>Southern hemisphere</li>
+          </ul>
+        </div>
+        <div class="con-box">
+          <div class="label">✗ Limitations</div>
+          <ul>
+            <li>Targeted fields - not all-sky</li>
+            <li>Still building up temporal baseline</li>
+            <li>Weather &amp; scheduling gaps</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="placeholder tall">
+        BlackGEM field coverage map<br>(southern sky, disk fields)
+        <code>assets/images/blackgem-coverage.png</code>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    You all know the telescope - so I'll focus on why it's uniquely suited here.
+    The resolution and field placement are the key differentiators.
+  </aside>
+</section>
+
+
+<!-- ── Detectability of LC effects ── -->
+<section data-section="Current Comparison">
+  <h2 class="mb-05">Detectability of Lightcurve Effects</h2>
+  <p class="text-small mt-0" style="color:var(--wl-text-sec);">
+    Simulated minimum datapoints to detect / identify / fit each effect vs
+    <em style="color:var(--wl-accent)">G</em><sub style="color:var(--wl-accent)">mag</sub>
+  </p>
+
+  <div class="columns" style="flex:1; min-height:0;">
+    <div class="col-2">
+      <div class="r-stack" style="height:100%;">
+        <!-- Layer 1 - HW Vir (VISIBLE by default, no fragment) -->
+        <div class="fragment fade-out" data-fragment-index="1" style="width:100%;">
+          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c1);">
+            Plot: HW Vir detection thresholds per survey
+            <code>assets/images/detect-hwvir.png</code>
+          </div>
+        </div>
+        <!-- Layer 2 - Reflection -->
+        <div class="fragment fade-in-then-out" data-fragment-index="1" style="width:100%;">
+          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c2);">
+            Plot: Reflection effect detection thresholds
+            <code>assets/images/detect-reflection.png</code>
+          </div>
+        </div>
+        <!-- Layer 3 - Ellipsoidal (stays visible) -->
+        <div class="fragment fade-in" data-fragment-index="2" style="width:100%;">
+          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c4);">
+            Plot: Ellipsoidal detection thresholds
+            <code>assets/images/detect-ellipsoidal.png</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" style="max-width:280px;">
+      <!-- First note visible by default -->
+      <div class="detect-note" style="border-left-color:var(--wl-c1);">
+        <strong>HW Vir</strong><br>
+        Deep eclipses → fewest points needed
+      </div>
+      <div class="detect-note fragment fade-in" data-fragment-index="1"
+           style="border-left-color:var(--wl-c2);">
+        <strong>Reflection</strong><br>
+        Moderate - needs good phase coverage
+      </div>
+      <div class="detect-note fragment fade-in" data-fragment-index="2"
+           style="border-left-color:var(--wl-c4);">
+        <strong>Ellipsoidal</strong><br>
+        Subtle signal - many points &amp; low errors required
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    Step through: HW Vir is easy for all surveys; reflection needs more;
+    ellipsoidal requires many data points AND low per-point errors.
+  </aside>
+</section>
+
+
+<!-- ── Survey coverage of hot subdwarfs ── -->
+<section data-section="Current Comparison">
+  <h2 class="mb-05">Catalogue Coverage Over Time</h2>
+  <p class="text-small mt-0" style="color:var(--wl-text-sec);">
+    Hot subdwarf catalogue: ~80 000 objects - how many have sufficient photometric data?
+  </p>
+
+  <div class="columns" style="flex:1; min-height:0;">
+    <!-- Left panel: visible by default -->
+    <div class="col">
+      <div class="placeholder" style="flex:1; min-height:250px;">
+        Coverage: all surveys<br>
+        (# subdwarfs with N+ datapoints over time)
+        <code>assets/images/coverage-all-surveys.png</code>
+      </div>
+      <p class="text-xs text-center" style="color:var(--wl-text-sec); margin-top:.25em;">
+        TESS · ZTF · ATLAS - years of head start
+      </p>
+    </div>
+    <!-- Right panel: appears on click -->
+    <div class="col fragment fade-in" data-fragment-index="0">
+      <div class="placeholder" style="flex:1; min-height:250px;">
+        Coverage: BlackGEM<br>
+        (cumulative from first light → now)
+        <code>assets/images/coverage-blackgem.png</code>
+      </div>
+      <p class="text-xs text-center" style="color:var(--wl-text-sec); margin-top:.25em;">
+        BlackGEM - 3 years of science observations
+      </p>
+    </div>
+  </div>
+
+  <aside class="notes">
+    Left: established surveys with years of data. Right: BlackGEM's growing coverage.
+    The question is where BlackGEM can uniquely contribute.
+  </aside>
+</section>
+
+
+<!-- ============================================================
+     BLACKGEM'S POTENTIAL
+     ============================================================ -->
+
+<!-- ── Niche: faint & crowded ── -->
+<section data-section="BlackGEM's Potential">
+  <h2>BlackGEM's Niche</h2>
+
+  <ul>
+    <li>
+      TESS struggles with <strong>crowded fields</strong> near the Galactic disk
+      - 21″ pixels blend faint subdwarfs with neighbours
+    </li>
+    <li>
+      ZTF lacks <strong>southern sky coverage</strong> below δ ≈ −30°
+    </li>
+    <li>
+      BlackGEM's <em>0.56″/px</em> resolves sources that are
+      <strong>blended or missing</strong> in other surveys
+    </li>
+    <li>
+      Targeted disk fields provide <strong>deep, repeated coverage</strong>
+      of exactly the region others miss
+    </li>
+  </ul>
+
+  <div class="callout" style="margin-top:.6em;">
+    BlackGEM is not competing on sky volume - it fills the niche where
+    <strong>spatial resolution</strong> and <strong>southern disk access</strong> matter most.
+    A <strong>detection machine</strong> for faint, crowded hot subdwarf binaries.
+  </div>
+
+  <aside class="notes">
+    This is the positioning argument. BlackGEM's strength is NOT replicating what ZTF or ATLAS do.
+    It's about the targets they can't handle.
+  </aside>
+</section>
+
+
+<!-- ── Future projections (the punchline) ── -->
+<section data-section="BlackGEM's Potential">
+  <h2>Future Projections</h2>
+  <p class="text-small" style="color:var(--wl-text-sec); margin-top:-.15em;">
+    Extrapolated number of hot subdwarfs with detectable LC variations over time
+  </p>
+
+  <div class="placeholder" style="flex:1; min-height:280px; max-width:92%; margin:0 auto;">
+    Projection plot<br>
+    x = time (first light → now → future)<br>
+    y = cumulative # detectable subdwarfs<br>
+    separate lines per LC effect · vertical "now" marker
+    <code>assets/images/future-projection.png</code>
+  </div>
+
+  <div class="callout" style="max-width:92%; margin:.5em auto 0;">
+    <!-- ★ UPDATE with your actual result ★ -->
+    <strong>Key result:</strong> [Placeholder - fill in once the projection is computed]
+  </div>
+
+  <aside class="notes">
+    This is the punchline. Based on the accumulation rate and detectability thresholds,
+    here's what BlackGEM is projected to deliver.
+  </aside>
+</section>
+
+
+<!-- ============================================================
+     CONCLUSIONS
+     ============================================================ -->
+
+<!-- ── Summary ── -->
+<section data-section="Conclusions">
+  <h2>Summary &amp; Conclusions</h2>
+
+  <ul>
+    <li><strong>1.</strong>&ensp;[Placeholder takeaway]</li>
+    <li><strong>2.</strong>&ensp;[Placeholder takeaway]</li>
+    <li><strong>3.</strong>&ensp;[Placeholder takeaway]</li>
+    <li><strong>4.</strong>&ensp;[Placeholder takeaway]</li>
+  </ul>
+
+  <aside class="notes">
+    Recap the key messages.
+  </aside>
+</section>
+
+
+<!-- ── End / Thank you ── -->
+<section data-section="" class="end-slide">
+  <h2>Thank You!</h2>
+  <p style="font-size:.88em; color:var(--wl-text-sec);">
+    Time for questions &amp; discussion
+  </p>
+
+  <div class="end-links">
+    <div class="placeholder qr" style="font-size:.42em;">
+      QR → GitHub repo
+      <code>assets/images/qr-code.png</code>
+    </div>
+    <div style="text-align:left;">
+      <p style="font-size:.78em; margin-bottom:.1em;"><strong>Fabian Mattig</strong></p>
+      <p class="text-xs" style="color:var(--wl-text-sec); margin-bottom:.4em;">
+        Universität Potsdam, Germany
+      </p>
+      <p class="text-xs">
+        <img src="assets/images/github-mark.svg" alt=""
+             style="height:.9em; vertical-align:middle; opacity:.5; margin-right:4px;">
+        <a href="https://github.com/your-username/your-repo" target="_blank">
+          github.com/your-username/your-repo
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <aside class="notes">
+    Thank you! Code for all analysis and figures is on GitHub.
+  </aside>
+</section>
+
+
+<!-- ============================================================
+     APPENDIX
+     ============================================================ -->
+<section data-section="Appendix">
+  <section>
+    <h2>Appendix</h2>
+    <p style="color:var(--wl-text-sec);">Supplementary material</p>
+  </section>
+
+  <section>
+    <h2>Appendix - Placeholder 1</h2>
+    <div class="placeholder tall" style="max-width:85%; margin:0 auto; flex:1;">
+      Extra slide content
+      <code>assets/images/appendix-1.png</code>
+    </div>
+  </section>
+
+  <section>
+    <h2>Appendix - Placeholder 2</h2>
+    <div class="placeholder tall" style="max-width:85%; margin:0 auto; flex:1;">
+      Extra slide content
+      <code>assets/images/appendix-2.png</code>
+    </div>
+  </section>
+</section>
+
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+
+<script>
+ Reveal.initialize({
+    width:  1280,
+    height: 720,
+    
+    controls: false,
+    margin: 0.02,
+    center: false,
+    minScale: 0.2,
+    maxScale: 3.0,
+
+    hash:    true,
+    history: true,
+
+    slideNumber: 'c/t',
+    progress:    false,
+
+    transition:           'fade',
+    transitionSpeed:      'default',
+    backgroundTransition: 'fade',
+
+    fragments: true,
+    overview: true,
+    touch: true,
+  });
+
+  /* ── Section tracker ── */
+  const tracker = document.getElementById('section-tracker');
+
+  function updateSectionTracker() {
+    let el = Reveal.getCurrentSlide();
+    let name = '';
+    while (el && el !== document.body) {
+      if (el.dataset.section !== undefined) {
+        name = el.dataset.section;
+        break;
+      }
+      el = el.parentElement;
+    }
+    tracker.textContent = name;
+    tracker.classList.toggle('visible', !!name);
+  }
+
+  Reveal.on('ready',        updateSectionTracker);
+  Reveal.on('slidechanged', updateSectionTracker);
+</script>
+</body>
+</html>
