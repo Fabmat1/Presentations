@@ -33,6 +33,10 @@
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
   text-transform: none;
 }
+.reveal img {
+  max-width: 100%;
+  max-height: 100%;
+}
 .reveal p, .reveal li, .reveal blockquote,
 .reveal .pro-box, .reveal .con-box,
 .reveal .callout, .reveal .detect-note {
@@ -76,6 +80,10 @@
   --r-link-color:      var(--wl-accent);
   --r-link-color-hover:#9A4A2E;
   --r-selection-background-color: rgba(184,91,58,0.25);
+  --r-overlay-margin: 0px;
+  --r-overlay-padding: 6px;
+  --r-overlay-gap: 5px;
+  --r-block-margin: 0px;
 }
 
 /* ── Global typography ── */
@@ -263,6 +271,32 @@ section.title-slide {
   border-radius: 8px;
 }
 
+.placeholder.bare {
+  background: transparent;
+  border: none;
+}
+
+.placeholder.bare:has(img) {
+  background: transparent;
+  border: none;
+}
+
+.placeholder.fill:has(img),
+.placeholder.fill:has(video) {
+  width: 100%;
+  flex: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.placeholder.fill img,
+.placeholder.fill video {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 8px;
+}
+
 /* ==========================================================
    PRO / CON BOXES
    ========================================================== */
@@ -327,6 +361,12 @@ section.title-slide {
   align-items:center; margin-top:1.2em;
 }
 .end-links .qr { width:130px; height:130px; min-height:auto; }
+
+.end-links p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
 </style>
 </head>
 
@@ -365,6 +405,21 @@ section.title-slide {
     <span style="margin-top:.5em; opacity:.65;">BlackGEM Collaboration Meeting · 2026</span>
   </div>
 
+  <div style="
+    position: absolute;
+    bottom: 0.9vh;
+    left: 70%;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: .4em;
+    color: rgba(255,255,255,.38);
+    line-height: 1.4;
+  ">
+    Video: <a href="https://www.youtube.com/watch?v=dcF1vc_dQAA" target="_blank"
+      style="color:rgba(255,255,255,.38); text-decoration:underline; text-underline-offset:2px;">
+      youtube.com/watch?v=dcF1vc_dQAA
+    </a> © José Rodrigues
+  </div>
+  
   <aside class="notes">
     Welcome. I'll cover what BlackGEM can do for short-period binary research today,
     how it compares to existing surveys, and where it's headed.  ~12 min talk.
@@ -451,25 +506,21 @@ section.title-slide {
 <section data-section="Introduction">
   <h2 class="mb-05">Lightcurve Signatures</h2>
   <p class="text-small mt-0 mb-0" style="color:var(--wl-text-sec);">
-    Three dominant photometric effects in short-period hot subdwarf binaries
+    Three examples of photometric effects in short-period hot subdwarf binaries
   </p>
 
   <div class="video-trio" style="margin-top:.5em;">
     <div class="card">
       <div class="placeholder">
-        <!-- <video data-autoplay loop muted playsinline src="assets/videos/hw-vir.mp4"></video> -->
-        ▶ HW Vir animation
-        <code>assets/videos/hw-vir.mp4</code>
+        <video data-autoplay loop muted playsinline src="assets/videos/hw-vir.mp4"></video>
       </div>
       <div class="name">HW Virginis</div>
-      <div class="desc">Deep eclipses - sdB + dM/BD</div>
+      <div class="desc">Deep eclipses and reflection effect - sdB + dM/BD</div>
     </div>
 
     <div class="card">
       <div class="placeholder">
-        <!-- <video data-autoplay loop muted playsinline src="assets/videos/reflection.mp4"></video> -->
-        ▶ Reflection effect animation
-        <code>assets/videos/reflection.mp4</code>
+        <video data-autoplay loop muted playsinline src="assets/videos/reflection.mp4"></video>
       </div>
       <div class="name">Reflection Effect</div>
       <div class="desc">Irradiated companion hemisphere</div>
@@ -477,9 +528,7 @@ section.title-slide {
 
     <div class="card">
       <div class="placeholder">
-        <!-- <video data-autoplay loop muted playsinline src="assets/videos/ellipsoidal.mp4"></video> -->
-        ▶ Ellipsoidal modulation animation
-        <code>assets/videos/ellipsoidal.mp4</code>
+        <video data-autoplay loop muted playsinline src="assets/videos/ellipsoidal.mp4"></video>
       </div>
       <div class="name">Ellipsoidal Modulation</div>
       <div class="desc">Tidal distortion - sdB + WD</div>
@@ -487,7 +536,7 @@ section.title-slide {
   </div>
 
   <p class="text-small text-center" style="margin-top:.5em; color:var(--wl-text-sec);">
-    Detection difficulty increases left → right &nbsp;·&nbsp; amplitude decreases from ~30 % to &lt; 1 %
+    Detection difficulty increases left → right &nbsp;|&nbsp; Amplitude decreases from ~60 % to &lt; 1 %
   </p>
 
   <aside class="notes">
@@ -518,24 +567,21 @@ section.title-slide {
       <div class="label">✗ Limitations</div>
       <ul>
         <li><strong>21″ pixels</strong> → severe crowding at faint magnitudes</li>
-        <li>FFI cadence 200 s – 10 min only</li>
-        <li>Shallow limiting mag for subdwarfs near the plane</li>
+        <li>FFI cadence 200 s for forced photometry</li>
+        <li>Bad coverage for subdwarfs near the plane</li>
       </ul>
     </div>
   </div>
 
   <div class="columns mt-1">
     <div class="col">
-      <div class="placeholder short">
-        TESS example lightcurve
-        <code>assets/images/tess-lc.png</code>
+      <div class="placeholder" style="max-height: 500px;">
+        <img src="assets/images/tess-lc.svg" alt="Example TESS LC of a 13.5 Gmag star exhibiting a reflection effect">
       </div>
     </div>
     <div class="col">
-      <div class="placeholder short">
-        TESS FFI cutout vs DSS - pixel size comparison
-        <code>assets/images/tess-ffi-vs-dss.png</code>
-      </div>
+      <div class="placeholder short fill">
+        <img src="assets/images/tess-ffi-vs-dss.svg" alt="Comparison of a TESS FFI to a DSS image for the same star"></div>
     </div>
   </div>
 
@@ -558,7 +604,6 @@ section.title-slide {
           <div class="label">✓ Strengths</div>
           <ul>
             <li>Deep - g ≈ 20.5 mag</li>
-            <li>Multi-band (g, r, i)</li>
             <li>High-cadence fields available</li>
           </ul>
         </div>
@@ -585,9 +630,23 @@ section.title-slide {
           <div class="label">✗ Limitations</div>
           <ul>
             <li>Shallower (c/o bands, ~19 mag)</li>
-            <li>Lower spatial resolution</li>
+            <li>Bigger pixel size of <strong>1.86″</strong></li>
           </ul>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="columns mt-1">
+    <div class="col">
+      <div class="placeholder short fill" style="max-height: 500px;">
+        Example ZTF LC
+        <code>assets/images/ztf-lc.txt</code>
+      </div>
+    </div>
+    <div class="col">
+      <div class="placeholder short fill">
+        Example ATLAS LC
+        <code>assets/images/atlas-lc.txt</code>
       </div>
     </div>
   </div>
@@ -629,17 +688,16 @@ section.title-slide {
           <div class="label">✓ Strengths</div>
           <ul>
             <li><strong>0.56″/px</strong> - excellent spatial resolution</li>
-            <li>Multi-band: u, g, r, i, z, q</li>
+            <li>Deep limiting magnitude <strong>21.9 mag</strong> @ 1 min in g band</li>
             <li>Fields near the <strong>Galactic plane</strong></li>
-            <li>Southern hemisphere</li>
           </ul>
         </div>
         <div class="con-box">
           <div class="label">✗ Limitations</div>
           <ul>
-            <li>Targeted fields - not all-sky</li>
-            <li>Still building up temporal baseline</li>
-            <li>Weather &amp; scheduling gaps</li>
+            <li>Small <strong>1.65°×1.65°</strong> fields</li>
+            <li>Still building up epochs</li>
+            <li>Weather &amp; scheduling gaps can disrupt sampling</li>
           </ul>
         </div>
       </div>
@@ -708,7 +766,7 @@ section.title-slide {
       <div class="detect-note fragment fade-in" data-fragment-index="2"
            style="border-left-color:var(--wl-c4);">
         <strong>Ellipsoidal</strong><br>
-        Subtle signal - many points &amp; low errors required
+        Tiny signals - many epochs &amp; small errors required
       </div>
     </div>
   </div>
@@ -724,7 +782,7 @@ section.title-slide {
 <section data-section="Current Comparison">
   <h2 class="mb-05">Catalogue Coverage Over Time</h2>
   <p class="text-small mt-0" style="color:var(--wl-text-sec);">
-    Hot subdwarf catalogue: ~80 000 objects - how many have sufficient photometric data?
+    Hot subdwarf catalogue: ~66 000 objects - how many have sufficient photometric data?
   </p>
 
   <div class="columns" style="flex:1; min-height:0;">
@@ -780,13 +838,13 @@ section.title-slide {
       <strong>blended or missing</strong> in other surveys
     </li>
     <li>
-      Targeted disk fields provide <strong>deep, repeated coverage</strong>
-      of exactly the region others miss
+      Targeted disk fields can provide <strong>deep, repeated coverage</strong>
+      of exactly the region others miss - <i>if</i> they are actually surveyed long enough
     </li>
   </ul>
 
   <div class="callout" style="margin-top:.6em;">
-    BlackGEM is not competing on sky volume - it fills the niche where
+    BlackGEM is not built to compete on sky volume - but it could fill the niche where
     <strong>spatial resolution</strong> and <strong>southern disk access</strong> matter most.
     A <strong>detection machine</strong> for faint, crowded hot subdwarf binaries.
   </div>
@@ -854,20 +912,19 @@ section.title-slide {
   </p>
 
   <div class="end-links">
-    <div class="placeholder qr" style="font-size:.42em;">
-      QR → GitHub repo
-      <code>assets/images/qr-code.png</code>
+    <div class="placeholder bare" style="width: 130px;">
+      <img src="assets/images/qr-code.png" alt="QR code">
     </div>
-    <div style="text-align:left;">
-      <p style="font-size:.78em; margin-bottom:.1em;"><strong>Fabian Mattig</strong></p>
-      <p class="text-xs" style="color:var(--wl-text-sec); margin-bottom:.4em;">
+    <div style="text-align: left;">
+      <p style="font-size: .78em;"><strong>Fabian Mattig</strong></p>
+      <p class="text-xs" style="color: var(--wl-text-sec);">
         Universität Potsdam, Germany
       </p>
       <p class="text-xs">
         <img src="assets/images/github-mark.svg" alt=""
-             style="height:.9em; vertical-align:middle; opacity:.5; margin-right:4px;">
-        <a href="https://github.com/your-username/your-repo" target="_blank">
-          github.com/your-username/your-repo
+          style="height: .9em; vertical-align: middle; opacity: .5; margin-right: 4px;">
+        <a href="https://github.com/Fabmat1/Presentations/tree/main/BlackGEMMeeting2026" target="_blank">
+          Fabmat1/Presentations
         </a>
       </p>
     </div>
