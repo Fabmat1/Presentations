@@ -328,6 +328,39 @@ section.title-slide {
   font-size:.78em; color:var(--wl-text); margin:.6em 0;
 }
 
+/* ==========================================================
+   N INDICATOR
+   ========================================================== */
+
+.n-indicator {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: .5em;
+}
+
+.n-indicator .pill {
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: .6em;
+  font-weight: 600;
+  background: var(--wl-surface);
+  color: var(--wl-text-sec);
+  border: 1px solid var(--wl-border);
+}
+
+.n-indicator .pill.active {
+  background: var(--wl-accent);
+  color: #fff;
+  border-color: var(--wl-accent);
+}
+
+.n-indicator .pill-sub {
+  font-weight: 400;
+  opacity: .7;
+  font-size: .85em;
+}
+
 
 /* ==========================================================
    THREE-VIDEO ROW
@@ -547,11 +580,11 @@ section.title-slide {
 
 
 <!-- ============================================================
-     CURRENT COMPARISON
+     SURVEY COMPARISON
      ============================================================ -->
 
 <!-- ── TESS ── -->
-<section data-section="Current Comparison">
+<section data-section="Survey Comparison">
   <h2>TESS</h2>
 
   <div class="pro-con">
@@ -593,7 +626,7 @@ section.title-slide {
 
 
 <!-- ── ZTF & ATLAS ── -->
-<section data-section="Current Comparison">
+<section data-section="Survey Comparison">
   <h2>ZTF &amp; ATLAS</h2>
 
   <div class="columns">
@@ -638,16 +671,12 @@ section.title-slide {
   </div>
   <div class="columns mt-1">
     <div class="col">
-      <div class="placeholder short fill" style="max-height: 500px;">
-        Example ZTF LC
-        <code>assets/images/ztf-lc.txt</code>
-      </div>
+      <div class="placeholder short">
+        <img src="assets/images/ztf-lc.svg" alt="Phased ZTF LC for the same 13.5 mag star as before"></div>
     </div>
     <div class="col">
-      <div class="placeholder short fill">
-        Example ATLAS LC
-        <code>assets/images/atlas-lc.txt</code>
-      </div>
+      <div class="placeholder short">
+        <img src="assets/images/atlas-lc.svg" alt="Phased ATLAS LC for the same 13.5 mag star as before"></div>
     </div>
   </div>
 
@@ -659,16 +688,14 @@ section.title-slide {
 
 
 <!-- ── Sky coverage comparison ── -->
-<section data-section="Current Comparison">
+<section data-section="Survey Comparison">
   <h2>Survey Sky Coverage</h2>
   <p class="text-small" style="color:var(--wl-text-sec); margin-top:-.15em;">
     Footprints of TESS, ZTF, ATLAS - with the hot subdwarf catalogue overlaid
   </p>
 
-  <div class="placeholder tall" style="max-width:92%; margin:0 auto; flex:1;">
-    All-sky Mollweide projection<br>
-    survey footprints + hot subdwarf catalogue positions
-    <code>assets/images/allsky-coverage.png</code>
+  <div class="placeholder tall" style="display: table; margin: 0 auto;">
+      <img src="assets/images/allsky-coverage.png" alt="All-sky Mollweide projection, survey footprints + hot subdwarf catalogue positions">
   </div>
 
   <aside class="notes">
@@ -678,7 +705,7 @@ section.title-slide {
 
 
 <!-- ── BlackGEM as a survey ── -->
-<section data-section="Current Comparison">
+<section data-section="Survey Comparison">
   <h2>BlackGEM for Hot Subdwarf Binaries</h2>
 
   <div class="columns center">
@@ -703,9 +730,8 @@ section.title-slide {
       </div>
     </div>
     <div class="col">
-      <div class="placeholder tall">
-        BlackGEM field coverage map<br>(southern sky, disk fields)
-        <code>assets/images/blackgem-coverage.png</code>
+      <div class="placeholder tall" style="display: table; margin: 0 auto;">
+        <img src="assets/images/blackgem-coverage.png" alt="All-sky Mollweide projection, BlackGEM footprint + hot subdwarf catalogue positions">
       </div>
     </div>
   </div>
@@ -717,69 +743,12 @@ section.title-slide {
 </section>
 
 
-<!-- ── Detectability of LC effects ── -->
-<section data-section="Current Comparison">
-  <h2 class="mb-05">Detectability of Lightcurve Effects</h2>
-  <p class="text-small mt-0" style="color:var(--wl-text-sec);">
-    Simulated minimum datapoints to detect / identify / fit each effect vs
-    <em style="color:var(--wl-accent)">G</em><sub style="color:var(--wl-accent)">mag</sub>
-  </p>
-
-  <div class="columns" style="flex:1; min-height:0;">
-    <div class="col-2">
-      <div class="r-stack" style="height:100%;">
-        <!-- Layer 1 - HW Vir (VISIBLE by default, no fragment) -->
-        <div class="fragment fade-out" data-fragment-index="1" style="width:100%;">
-          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c1);">
-            Plot: HW Vir detection thresholds per survey
-            <code>assets/images/detect-hwvir.png</code>
-          </div>
-        </div>
-        <!-- Layer 2 - Reflection -->
-        <div class="fragment fade-in-then-out" data-fragment-index="1" style="width:100%;">
-          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c2);">
-            Plot: Reflection effect detection thresholds
-            <code>assets/images/detect-reflection.png</code>
-          </div>
-        </div>
-        <!-- Layer 3 - Ellipsoidal (stays visible) -->
-        <div class="fragment fade-in" data-fragment-index="2" style="width:100%;">
-          <div class="placeholder" style="min-height:280px; border-color:var(--wl-c4);">
-            Plot: Ellipsoidal detection thresholds
-            <code>assets/images/detect-ellipsoidal.png</code>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col" style="max-width:280px;">
-      <!-- First note visible by default -->
-      <div class="detect-note" style="border-left-color:var(--wl-c1);">
-        <strong>HW Vir</strong><br>
-        Deep eclipses → fewest points needed
-      </div>
-      <div class="detect-note fragment fade-in" data-fragment-index="1"
-           style="border-left-color:var(--wl-c2);">
-        <strong>Reflection</strong><br>
-        Moderate - needs good phase coverage
-      </div>
-      <div class="detect-note fragment fade-in" data-fragment-index="2"
-           style="border-left-color:var(--wl-c4);">
-        <strong>Ellipsoidal</strong><br>
-        Tiny signals - many epochs &amp; small errors required
-      </div>
-    </div>
-  </div>
-
-  <aside class="notes">
-    Step through: HW Vir is easy for all surveys; reflection needs more;
-    ellipsoidal requires many data points AND low per-point errors.
-  </aside>
-</section>
+<!-- Detectability slides — generated by JS -->
+<section id="detect-placeholder"></section>
 
 
 <!-- ── Survey coverage of hot subdwarfs ── -->
-<section data-section="Current Comparison">
+<section data-section="Survey Comparison">
   <h2 class="mb-05">Catalogue Coverage Over Time</h2>
   <p class="text-small mt-0" style="color:var(--wl-text-sec);">
     Hot subdwarf catalogue: ~66 000 objects - how many have sufficient photometric data?
@@ -946,10 +915,9 @@ section.title-slide {
   </section>
 
   <section>
-    <h2>Appendix - Placeholder 1</h2>
-    <div class="placeholder tall" style="max-width:85%; margin:0 auto; flex:1;">
-      Extra slide content
-      <code>assets/images/appendix-1.png</code>
+    <h2>Appendix - Number of available BlackGEM observations for hot subdwarfs</h2>
+    <div class="placeholder tall" style="display: table; margin: 0 auto;">
+      <img src="assets/images/blackgem_obs_histogram.svg" alt="Histogram of available BlackGEM data">
     </div>
   </section>
 
@@ -969,6 +937,79 @@ section.title-slide {
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
 
 <script>
+  (function () {
+      const effects = [
+        {
+          name: 'HW Virginis', key: 'hwvir', color: 'var(--wl-c1)',
+          desc: 'Deep eclipses → fewest points needed'
+        },
+        {
+          name: 'Reflection', key: 'reflection', color: 'var(--wl-c2)',
+          desc: 'Moderate — needs good phase coverage'
+        },
+        {
+          name: 'Ellipsoidal', key: 'ellipsoidal', color: 'var(--wl-c4)',
+          desc: 'Tiny signals — many epochs &amp; small errors required'
+        },
+      ];
+
+      const samples = [
+        { n: '0010', label: '10', sub: 'median' },
+        { n: '0035', label: '35', sub: '2σ' },
+        { n: '0500', label: '500', sub: '3σ' },
+        { n: '1000', label: '1000', sub: 'max' },
+      ];
+
+      const marker = document.getElementById('detect-placeholder');
+      const parent = marker.parentNode;
+
+      effects.forEach((fx, ei) => {
+        const stack = document.createElement('section');
+        stack.dataset.section = 'Survey Comparison';
+
+        samples.forEach((s, si) => {
+          const slide = document.createElement('section');
+
+          // Accumulate notes up to current effect
+          const notes = effects.slice(0, ei + 1).map(e =>
+            `<div class="detect-note" style="border-left-color:${e.color};">
+           <strong>${e.name}</strong><br>${e.desc}
+         </div>`
+          ).join('');
+
+          // Build pills — highlight current sample
+          const pills = samples.map((p, pi) =>
+            `<span class="pill${pi === si ? ' active' : ''}">
+           ${p.label} pts <span class="pill-sub">(${p.sub})</span>
+         </span>`
+          ).join('');
+
+          slide.innerHTML = `
+        <h2 class="mb-05">Detectability: ${fx.name}</h2>
+        <p class="text-small mt-0" style="color:var(--wl-text-sec);">
+          Recoverability of signals in simulated lightcurves
+        </p>
+        <div class="columns" style="flex:1; min-height:0;">
+          <div class="col-2">
+            <div class="placeholder">
+              <img src="assets/images/${fx.key}_lcurve_bgN${s.n}.svg"
+                   alt="${fx.name} lightcurve — N = ${s.label}">
+            </div>
+            <div class="n-indicator">${pills}</div>
+          </div>
+          <div class="col" style="max-width:280px;">
+            ${notes}
+          </div>
+        </div>`;
+
+          stack.appendChild(slide);
+        });
+
+        parent.insertBefore(stack, marker);
+      });
+
+      marker.remove();
+    })();
  Reveal.initialize({
     width:  1280,
     height: 720,

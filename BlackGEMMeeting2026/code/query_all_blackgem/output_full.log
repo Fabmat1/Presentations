@@ -1,0 +1,193 @@
+2026-03-27T20:16:26.385 [INFO, 10714] logfile created: output_full.log [main, line 223]
+2026-03-27T20:16:26.385 [INFO, 10714] maximum number of CPUs used: 1 [main, line 291]
+2026-03-27T20:16:26.412 [INFO, 10714] 66434 lines in input file source_ids_temp.csv [main, line 361]
+2026-03-27T20:16:26.483 [INFO, 10714] 66328 unique input source_ids specified [main, line 384]
+2026-03-27T20:16:26.484 [WARNING, 10714] 106 source IDs were identical to others and are disregarded [main, line 387]
+2026-03-27T20:16:26.486 [INFO, 10714] 66328 source IDs will be queried [query_sids, line 822]
+2026-03-27T20:16:26.486 [INFO, 10714] splitting into 14 query jobs [query_sids, line 827]
+2026-03-27T20:16:26.486 [INFO, 10714] running query 1/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:16:30.068 [INFO, 10714] query 1/14 finished; 29112 rows returned for 716 sources [run_query, line 1542]
+2026-03-27T20:16:30.159 [INFO, 10714] running query 2/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:16:32.667 [INFO, 10714] query 2/14 finished; 11680 rows returned for 997 sources [run_query, line 1542]
+2026-03-27T20:16:32.704 [INFO, 10714] running query 3/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:16:35.108 [INFO, 10714] query 3/14 finished; 22769 rows returned for 115 sources [run_query, line 1542]
+2026-03-27T20:16:35.176 [INFO, 10714] running query 4/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:16:49.234 [INFO, 10714] query 4/14 finished; 39310 rows returned for 1133 sources [run_query, line 1542]
+2026-03-27T20:16:49.365 [INFO, 10714] running query 5/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:17:04.791 [INFO, 10714] query 5/14 finished; 49695 rows returned for 1267 sources [run_query, line 1542]
+2026-03-27T20:17:04.935 [INFO, 10714] running query 6/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:17:20.209 [INFO, 10714] query 6/14 finished; 40623 rows returned for 1363 sources [run_query, line 1542]
+2026-03-27T20:17:20.331 [INFO, 10714] running query 7/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:17:36.239 [INFO, 10714] query 7/14 finished; 53949 rows returned for 938 sources [run_query, line 1542]
+2026-03-27T20:17:36.391 [INFO, 10714] running query 8/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:17:52.052 [INFO, 10714] query 8/14 finished; 40452 rows returned for 800 sources [run_query, line 1542]
+2026-03-27T20:17:52.166 [INFO, 10714] running query 9/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:18:08.623 [INFO, 10714] query 9/14 finished; 23657 rows returned for 675 sources [run_query, line 1542]
+2026-03-27T20:18:08.706 [INFO, 10714] running query 10/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:18:22.963 [INFO, 10714] query 10/14 finished; 37109 rows returned for 823 sources [run_query, line 1542]
+2026-03-27T20:18:23.071 [INFO, 10714] running query 11/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:18:36.130 [INFO, 10714] query 11/14 finished; 83190 rows returned for 829 sources [run_query, line 1542]
+2026-03-27T20:18:36.372 [INFO, 10714] running query 12/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:18:50.305 [INFO, 10714] query 12/14 finished; 49811 rows returned for 675 sources [run_query, line 1542]
+2026-03-27T20:18:50.443 [INFO, 10714] running query 13/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:19:05.427 [INFO, 10714] query 13/14 finished; 10558 rows returned for 738 sources [run_query, line 1542]
+2026-03-27T20:19:05.464 [INFO, 10714] running query 14/14:
+
+
+            SELECT s.SOURCE_ID,s.RA,s.DEC,s.PARALLAX,s.PM,s.PHOT_G_MEAN_MAG,i.FILENAME,i.TELESCOP,i.PROGNAME,i.OBJECT,i.FILTER,i.EXPTIME,i.RA_CNTR,i.DEC_CNTR,i.DATE_OBS,i.MJD_OBS,i.BJD_OBS,i.S_SEEING,i.S_BKG,i.S_BKGSTD,i.AIRMASSC,i.CL_BASE,i.RH_MAST,i.WINDAVE,i.PC_ZP,i.PC_ZPSTD,i.PC_ZPERR,i.LIMMAG,i.QC_FLAG,i.QCRED1,i.QCRED2,d.FLAGS_MASK,d.FLAGS_OPT,d.BACKGROUND,d.FNU_OPT,d.FNUERR_OPT,d.FNUERRTOT_OPT,d.MAG_OPT,d.MAGERR_OPT,d.MAGERRTOT_OPT
+            FROM `blackgem-full-source-db.blackgem_fullsource_v2.detections` AS d
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.images` AS i USING (IMAGE_ID)
+            JOIN `blackgem-full-source-db.blackgem_fullsource_v2.sources` AS s USING (SOURCE_ID)
+            WHERE s.SOURCE_ID IN UNNEST(@source_ids)
+             AND i.FILTER IN UNNEST(@filters)
+ AND i.TELESCOP IN UNNEST(@tels)
+
+ [run_query, line 1522]
+2026-03-27T20:19:10.931 [INFO, 10714] query 14/14 finished; 6831 rows returned for 164 sources [run_query, line 1542]
+2026-03-27T20:19:11.159 [INFO, 10714] converting idx_in to source_id:index dictionary [query_fullsource, line 628]
+2026-03-27T20:19:11.406 [INFO, 10714] sorting table by index, FILENAME and source ID [query_fullsource, line 657]
+2026-03-27T20:19:19.438 [INFO, 10714] 498746 rows in output table; writing results to output_full.csv [main, line 502]
+2026-03-27T20:19:34.305 [INFO, 10714] all done in 187.9 s [main, line 520]
