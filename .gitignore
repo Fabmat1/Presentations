@@ -1,2 +1,18 @@
-node_modules
-BlackGEMMeeting2026/assets/videos/*.mp4
+# Dependencies
+node_modules/
+
+# Videos (large binary assets)
+*.mp4
+
+# Large data files
+*.pkl
+code/query_all_blackgem/output_full.csv
+code/query_all_blackgem/blackgem_source_scatter.csv
+
+# Compiled Python / C
+__pycache__/
+*.pyc
+*.so
+
+# Build artifacts
+slides.pdf
